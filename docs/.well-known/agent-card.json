@@ -1,0 +1,17 @@
+{
+  "name": "YouTube CLI Agent",
+  "description": "Agent interface and automated scraper for YouTube search, videos, channels, playlists, and subtitles via Apify.",
+  "url": "https://spacecorps.github.io/Youtube-Cli/",
+  "version": "1.0.0",
+  "capabilities": ["search", "scrape", "subtitles", "metadata", "channels", "playlists"],
+  "skills": [
+    {
+      "name": "youtube-cli",
+      "url": "https://spacecorps.github.io/Youtube-Cli/llms.txt"
+    }
+  ],
+  "contact": {
+    "email": "contact@spacecorps.dev",
+    "url": "https://spacecorps.github.io/Youtube-Cli/contact.html"
+  }
+}

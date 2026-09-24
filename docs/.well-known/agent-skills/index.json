@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "youtube-cli",
+      "description": "Search YouTube for videos, shorts, and live streams, scrape channel catalogs and playlists, download subtitles, and retrieve structured video metadata via Apify using the native Rust CLI.",
+      "type": "skill-md",
+      "url": "https://spacecorps.github.io/Youtube-Cli/llms.txt",
+      "digest": "sha256:506040f9f0b5b4f1a5ca1cd2e8f63c2902faf00f145efb79a40eca8e80a1ed53"
+    }
+  ]
+}

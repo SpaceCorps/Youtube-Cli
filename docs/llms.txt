@@ -1,0 +1,55 @@
+# YouTube CLI
+
+> A blazing fast native command-line tool and agent interface for searching and scraping YouTube videos, channels, playlists, and subtitles via Apify. Built in Rust 2024 for developers and autonomous AI agents.
+
+## When to Use This CLI
+
+Use the `youtube` CLI whenever you need to:
+- **Search YouTube:** Find videos, Shorts, and livestreams by query with precision filters (date, duration, HD, 4K, CC).
+- **Scrape YouTube URLs:** Extract structured metadata from videos, channels, playlists, or hashtags.
+- **Download Captions & Subtitles:** Extract subtitles in SRT, VTT, XML, or plaintext format for LLM context and RAG indexing.
+- **Agentic Automation:** Drive search and retrieval deterministically via `--json` output and stable error exit codes.
+
+Do NOT use this tool if:
+- You need local downloading of MP4/video files (this tool extracts structured metadata and subtitles).
+- You do not have an Apify API token.
+
+## Core Agent Operating Principles
+
+1. **Credentials:** Provide credentials via `--account <name>` (short `-a <name>`), `--api-key <key>`, or by setting `APIFY_TOKEN`.
+2. **First-Time Setup:** Run `youtube login` to authenticate with your Apify account or use `echo "$APIFY_TOKEN" | youtube login --api-key-stdin` in automated environments.
+3. **Machine-Readable Outputs:** Always supply `--json` when parsing command results in scripts or LLM tool-calling loops.
+4. **Error Codes:** Non-zero exit codes carry structured error envelopes with stable machine-readable codes (`no_account`, `auth_required`, `not_found`, `rate_limited`, `invalid_input`).
+5. **Execution Latency:** Scraper operations execute synchronously through Apify and usually take 30–60 seconds.
+
+## Key Command Patterns
+
+### Authentication & Accounts
+- `youtube login [name]`: Interactively authenticate and store the Apify token in the OS keystore.
+- `youtube accounts list --check`: List all configured accounts and verify token validity against Apify.
+- `youtube accounts test <name>`: Verify connectivity and inspect token identity.
+
+### Search
+- `youtube search "<query>" [options]`: Search YouTube videos.
+  - `--max-results <n>`: Limit results (default: 10).
+  - `--max-shorts <n>`: Include shorts.
+  - `--max-streams <n>`: Include livestreams.
+  - `--sort <relevance|rating|date|views>`: Sort ordering.
+  - `--date <hour|today|week|month|year>`: Upload date filter.
+  - `--length <under4|between420|plus20>`: Duration filter.
+  - `--four-k`, `--hd`, `--subtitles`, `--cc`: Filter flags.
+  - `--download-subs --subs-lang <lang> --subs-format <srt|vtt|xml|plaintext>`: Download subtitles.
+  - `--since "<date>"`: Only videos after date or offset (e.g. `2025-01-01` or `7 days`).
+
+### Scrape
+- `youtube scrape "<url>" [options]`: Scrape video, channel, playlist, or hashtag URL.
+  - `--max-results <n>`: Max items.
+  - `--sort <NEWEST|POPULAR|OLDEST>`: Sort channel videos.
+  - `--download-subs --subs-lang <lang> --subs-format <fmt>`: Download subtitles.
+  - `--since "<date>"`: Filter videos after date.
+
+## API Specification & Documentation
+- Full Documentation: https://spacecorps.github.io/Youtube-Cli/
+- Detailed Agent Manual: https://spacecorps.github.io/Youtube-Cli/llms-full.txt
+- Pricing: https://spacecorps.github.io/Youtube-Cli/pricing.md
+- Authentication: https://spacecorps.github.io/Youtube-Cli/auth.md

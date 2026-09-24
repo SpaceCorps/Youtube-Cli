@@ -1,0 +1,83 @@
+# YouTube CLI - Comprehensive Agent Reference Manual
+
+> An exhaustive technical manual for autonomous agents driving the YouTube CLI (`youtube`). Covers search, scraping, account management, and error remediation via Apify.
+
+## When To Use This Tool
+- Automated extraction of YouTube video transcripts, titles, view counts, and metadata for RAG and research agents.
+- Monitoring channel uploads and playlist contents programmatically.
+- Finding niche videos matching exact criteria (duration, date, 4K, CC).
+- Fetching subtitles in multiple languages and formats (`srt`, `vtt`, `xml`, `plaintext`).
+
+## Exit Codes and Error Envelopes
+
+Every error response on stderr conforms to the standard envelope structure:
+```json
+{
+  "code": "error_code_string",
+  "message": "Human readable summary",
+  "detail": "Extended debugging context",
+  "remediation": "Exact command or action needed to fix"
+}
+```
+
+Exit code numbers match the error code contract:
+- `0`: Success
+- `1`: Unclassified error
+- `2`: Network / transport failure (retry once, then stop)
+- `3`: `auth_required` - Token missing, expired, or rejected
+- `4`: `not_found` - Resource or actor not found
+- `5`: `rate_limited` - Apify rate limit reached (back off before retrying)
+- `6`: `invalid_input` - Bad command flags, missing arguments, or invalid payload
+- `7`: `no_account` - Run `youtube accounts list` or `youtube login`
+
+## Complete Command Specification
+
+### `youtube search <QUERY>`
+Searches YouTube for videos matching `<QUERY>`.
+
+Flags:
+- `-a, --account <NAME>`: Stored account profile name
+- `--api-key <KEY>`: Explicit Apify API token
+- `--json`: Output structured JSON on stdout
+- `--max-results <N>`: Maximum regular videos (default: 10, 0 = unlimited)
+- `--max-shorts <N>`: Maximum Shorts to return (default: 0)
+- `--max-streams <N>`: Maximum streams to return (default: 0)
+- `--sort <ORDER>`: Sort by: `relevance`, `rating`, `date`, `views`
+- `--date <FILTER>`: Upload date: `hour`, `today`, `week`, `month`, `year`
+- `--length <FILTER>`: Duration: `under4`, `between420`, `plus20`
+- `--type <TYPE>`: Video type: `video`, `movie`
+- `--hd`: Only HD videos
+- `--live`: Only live videos
+- `--four-k`, `--4k`: Only 4K videos
+- `--subtitles`: Only videos with subtitles/CC
+- `--cc`: Only Creative Commons videos
+- `--download-subs`: Download subtitles
+- `--subs-lang <LANG>`: Subtitle language (`en`, `es`, `de`, `fr`, `ja`, etc., default: `en`)
+- `--subs-format <FMT>`: Subtitle format: `srt`, `vtt`, `xml`, `plaintext` (default: `srt`)
+- `--auto-subs`: Prefer auto-generated subtitles
+- `--since <DATE>`: Only videos published after date (e.g. `2025-01-01` or `7 days`)
+
+### `youtube scrape <URL>`
+Scrapes a YouTube URL (video, channel, playlist, or hashtag).
+
+Flags:
+- `-a, --account <NAME>`: Stored account profile name
+- `--api-key <KEY>`: Explicit Apify API token
+- `--json`: Output structured JSON on stdout
+- `--max-results <N>`: Maximum regular videos (default: 10, 0 = unlimited)
+- `--max-shorts <N>`: Maximum Shorts to return (default: 0)
+- `--max-streams <N>`: Maximum streams to return (default: 0)
+- `--sort <ORDER>`: Channel sort: `NEWEST`, `POPULAR`, `OLDEST`
+- `--download-subs`: Download subtitles
+- `--subs-lang <LANG>`: Subtitle language (default: `en`)
+- `--subs-format <FMT>`: Subtitle format: `srt`, `vtt`, `xml`, `plaintext` (default: `srt`)
+- `--auto-subs`: Prefer auto-generated subtitles
+- `--since <DATE>`: Only videos published after date
+
+### Account Management
+- `youtube login [NAME] [--api-key <KEY>] [--api-key-stdin] [--force] [--no-browser] [--no-verify]`
+- `youtube accounts list [--check]`
+- `youtube accounts test <NAME>`
+- `youtube accounts add <NAME> [--api-key <KEY>] [--api-key-stdin] [--force] [--no-verify]`
+- `youtube accounts remove <NAME> [--yes]`
+- `youtube agent-readme [--json]`
